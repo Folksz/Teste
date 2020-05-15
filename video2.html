@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset=utf-8>
+		<title> Geometria.</title>
+		
+		<style>
+			body {margin:0;}
+			canvas {width:100%;height:100%;}
+		</style>
+	
+
+	</head>
+	
+	<body>
+		<script src= "threejs/build/three.js"></script>
+		<script>
+		function init()
+		{
+			<!--cena-->
+			var scene= new THREE.Scene();
+
+			<!--camera perspectiva -->
+			<!--Parametros:Degrau,Divisão largura/altura,Ponto de visão mínima,ponto de visão máximo-->
+			var camera= new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+			
+			camera.position.set(7,7,7)	<!--Posição camera-->
+			camera.lookAt(scene.position)	<!--Pra onde a câmera olha-->
+
+
+
+			
+			<!--renderer-->		
+			var renderer=new THREE.WebGLRenderer();
+			<!--Mudar cor do fundo e deixar aparecendo-->		
+			renderer.setClearColor(0xEEEEEE,1)
+			<!--Area do browser a ser preenchida-->
+			renderer.setSize(window.innerWidth,window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			<!--Adicionar eixos-->
+			var axes=new THREE.AxisHelper(10);<!--Parâmetro: tamanho-->
+			scene.add(axes);
+
+
+			<!-- criando o cubo-->
+			var geometry=new THREE.BoxGeometry(1,1,1);	<!-- Tamanho-->
+			var material=new THREE.MeshBasicMaterial({color:0x0000ff}); <!-- Cor-->
+			var cube	= new THREE.Mesh(geometry,material);
+			scene.add(cube);
+			
+			
+
+			function animatecube()
+			{
+				requestAnimationFrame(animatecube);
+
+				cube.rotation.x+=0.1;
+				cube.rotation.y+=0.1;
+				cube.rotation.z+=0.1;
+				
+				renderer.render(scene,camera);
+			}
+			animatecube();
+			
+			cuboSeguePraFrente=true;
+			function translatecube()
+			{
+				
+				requestAnimationFrame(translatecube);
+				
+				if(cuboSeguePraFrente == true){
+					cube.position.z+=0.1;
+				}
+				else{
+					cube.position.z-=0.1;
+				}
+
+				if(cube.position.z>=5.0){
+					cuboSeguePraFrente=false;
+				}
+				else if (cube.position.z<=0)
+				{
+					cuboSeguePraFrente=true;
+				}
+					
+				renderer.render(scene,camera);
+			}
+			translatecube();
+			
+		<!------------------------------------------------------->
+			<!-- criando o triângulo-->
+			var triangleGeometry=new THREE.Geometry();
+			<!-- Vértices do triângulo-->
+			var v1=new THREE.Vector3(0,0,0);
+			var v2=new THREE.Vector3(4,0,0);
+			var v3=new THREE.Vector3(4,2,0);
+			
+			triangleGeometry.vertices.push(v1);
+			triangleGeometry.vertices.push(v2);
+			triangleGeometry.vertices.push(v3);
+			triangleGeometry.faces.push(new THREE.Face3(0,1,2));
+			
+			<!--Face do Triangulo-->
+			var triangleMaterial=new THREE.MeshBasicMaterial({color: 0xff0000}); <!--- Material do Triangulo-->
+			var triangle=new THREE.Mesh(triangleGeometry,triangleMaterial);
+			scene.add(triangle);
+			
+			
+			function rotatetriangle()
+			{
+			requestAnimationFrame(rotatetriangle);
+			triangle.rotation.z +=0.1;
+			renderer.render(scene,camera);
+			}
+			rotatetriangle();
+		
+			
+			triangleSeguePraFrente=true;
+			function translatetriangle()
+			{
+				
+				requestAnimationFrame(translatetriangle);
+				
+				if(triangleSeguePraFrente == true){
+					triangle.position.x+=0.1;
+				}
+				else{
+					triangle.position.x-=0.1;
+				}
+
+				if(triangle.position.x>=5.0){
+					triangleSeguePraFrente=false;
+				}
+				else if (triangle.position.x<=0)
+				{
+					triangleSeguePraFrente=true;
+				}
+					
+				renderer.render(scene,camera);
+			}
+			translatetriangle();
+			
+			
+			<!-- criar esfera -->
+
+			<!--Raio,Suave na Altura, Suave na Largura -->
+			var sphereGeometry=new THREE.SphereGeometry (0.5,20,20);
+			var sphereMaterial= new THREE.MeshBasicMaterial({color:0x00ff00});
+			var sphere=new THREE.Mesh(sphereGeometry,sphereMaterial);
+			sphere.position.set(0,2,0); <!--Posição-->
+			scene.add(sphere);
+			}
+			
+		
+		
+		window.onload=init;
+		
+		
+		</script>
+		
+		
+	</body>
+
+</html>
